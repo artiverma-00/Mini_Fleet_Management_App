@@ -1,39 +1,48 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
-export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const Login = () => {
+  const emailRef = useRef(null);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { setIsAuthenticated } = useContext(AuthContext);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    login(email, password);
-    navigate('/admin');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    emailRef.current.focus();
+  }, []);
+
+  const handleLogin = () => {
+    if (email === "admin@gmail.com" && password === "admin1234") {
+      alert("Login success");
+      setIsAuthenticated(true);
+      navigate("/admin");
+    } else {
+      alert("Wrong email or password");
+    }
   };
 
   return (
-    <div className="login-container">
-      <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
+    <div className="center">
+      <h2>Login</h2>
+      <input
+        ref={emailRef}
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button onClick={handleLogin}>Login</button>
     </div>
   );
-}
+};
+
+export default Login;

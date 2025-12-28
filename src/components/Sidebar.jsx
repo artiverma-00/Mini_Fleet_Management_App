@@ -1,17 +1,61 @@
-import React from 'react';
+import { useState } from "react";
 
-export default function Sidebar() {
+const Sidebar = ({ addFleet }) => {
+  const [form, setForm] = useState({
+    regNo: "",
+    category: "Auto",
+    driver: "",
+    status: "Available",
+  });
+
+  const handleSubmit = () => {
+    if (!form.regNo || !form.driver) {
+      alert("All fields required");
+      return;
+    }
+
+    addFleet({ ...form, id: Date.now() });
+
+    setForm({
+      regNo: "",
+      category: "Auto",
+      driver: "",
+      status: "Available",
+    });
+  };
+
   return (
-    <aside className="sidebar">
-      <div className="sidebar-menu">
-        <h2>Menu</h2>
-        <ul>
-          <li><a href="#dashboard">Dashboard</a></li>
-          <li><a href="#vehicles">Vehicles</a></li>
-          <li><a href="#drivers">Drivers</a></li>
-          <li><a href="#settings">Settings</a></li>
-        </ul>
-      </div>
-    </aside>
+    <div className="sidebar">
+      <h3>Add Fleet</h3>
+      <input
+        placeholder="Vehicle Reg No"
+        value={form.regNo}
+        onChange={(e) => setForm({ ...form, regNo: e.target.value })}
+      />
+      <select
+        value={form.category}
+        onChange={(e) => setForm({ ...form, category: e.target.value })}
+      >
+        <option>Auto</option>
+        <option>Car</option>
+        <option>Truck</option>
+        <option>Bus</option>
+      </select>
+      <input
+        placeholder="Driver Name"
+        value={form.driver}
+        onChange={(e) => setForm({ ...form, driver: e.target.value })}
+      />
+      <select
+        value={form.status}
+        onChange={(e) => setForm({ ...form, status: e.target.value })}
+      >
+        <option>Available</option>
+        <option>Unavailable</option>
+      </select>
+      <button onClick={handleSubmit}>Add Fleet</button>
+    </div>
   );
-}
+};
+
+export default Sidebar;

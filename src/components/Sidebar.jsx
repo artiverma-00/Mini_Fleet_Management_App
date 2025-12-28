@@ -54,6 +54,7 @@ const Sidebar = ({ addFleet }) => {
         <option>Unavailable</option>
       </select>
       <button onClick={handleSubmit}>Add Fleet</button>
+      
     </div>
   );
 };
